@@ -1,0 +1,29 @@
+{
+  "name": "mk-modular-remix",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "pnpm run -r build",
+    "dev": "pnpm run --parallel dev",
+    "dev:host": "pnpm run --filter host dev",
+    "dev:module1": "pnpm run --filter module1 dev",
+    "dev:module2": "pnpm run --filter module2 dev",
+    "start": "pnpm run --filter host start",
+    "typecheck": "pnpm run -r typecheck"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "eslint": "^8.38.0",
+    "typescript": "^5.1.6"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
