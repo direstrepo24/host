@@ -1,3 +1,5 @@
+import { AppEvent, EventHandler, EventSubscribersMap } from "./types";
+
 /**
  * EventBus implementa un sistema de eventos pub/sub para la comunicación entre módulos.
  * Utiliza el patrón Singleton para asegurar una única instancia en toda la aplicación.
