@@ -1,3 +1,8 @@
 export * from './events';
-export { default as Button } from './components/Button';
-export { default as DataTable } from './components/DataTable';
+export { Button } from './components/Button';
+export { DataTable } from './components/DataTable';
+export { Footer } from './components/Footer';
+
+// Export routing utilities
+export { useRouteRegistration } from './routing/useRouteRegistration';
+export * from './routing';

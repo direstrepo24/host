@@ -50,11 +50,31 @@ export interface NotificationEvent extends BaseEvent {
   };
 }
 
+/**
+ * Evento de registro de rutas dinámicas
+ */
+export interface RouteRegistrationEvent extends BaseEvent {
+  type: 'ROUTE_REGISTRATION';
+  payload: {
+    moduleId: string;
+    routes: Array<{
+      path: string;
+      component: React.ComponentType;
+      index?: boolean;
+      children?: Array<{
+        path: string;
+        component: React.ComponentType;
+        index?: boolean;
+      }>;
+    }>;
+  };
+}
+
 // Unión de todos los tipos de eventos
 /**
  * Unión de todos los tipos de eventos soportados por la aplicación
  */
-export type AppEvent = UserEvent | ModuleEvent | NotificationEvent;
+export type AppEvent = UserEvent | ModuleEvent | NotificationEvent | RouteRegistrationEvent;
 
 // Tipo para los manejadores de eventos
 /**

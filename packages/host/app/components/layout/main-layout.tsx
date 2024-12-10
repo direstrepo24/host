@@ -1,12 +1,18 @@
 import React from 'react';
 import { Header } from './header';
 import { Sidebar } from './sidebar';
+import { Footer } from '@mk-modular/shared';
 
 interface MainLayoutProps {
   children: React.ReactNode;
+  version: string;
+  buildTime: string;
 }
 
-export const MainLayout = ({ children }: MainLayoutProps) => {
+// Versión estática del proyecto
+const APP_VERSION = '1.0.0';
+
+export const MainLayout = ({ children, version, buildTime }: MainLayoutProps) => {
   return (
     <div className="relative flex min-h-screen">
       {/* Sidebar */}
@@ -20,6 +26,10 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         <main className="flex-1 p-6">
           {children}
         </main>
+        <Footer 
+          buildTime={buildTime}
+          version={version} 
+        />
       </div>
     </div>
   );
