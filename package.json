@@ -25,5 +25,11 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@remix-run/node": "^2.3.0",
+    "@remix-run/react": "^2.3.0",
+    "lucide-react": "^0.468.0",
+    "zod": "^3.24.0"
   }
 }

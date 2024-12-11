@@ -9,10 +9,10 @@ import { EventContext } from './EventProvider';
  * @param eventType - El tipo de evento al que suscribirse
  * @param handler - La función que maneja el evento
  */
-export function useEventSubscription<T extends AppEvent>(
+export const useEventSubscriber = <T extends AppEvent>(
   eventType: T['type'],
   handler: EventHandler<T>
-) {
+) => {
   const eventBus = useContext(EventContext);
 
   useEffect(() => {
@@ -20,15 +20,12 @@ export function useEventSubscription<T extends AppEvent>(
       return;
     }
 
-    console.log('Subscribing to event type:', eventType);
     const unsubscribe = eventBus.subscribe(eventType, handler);
-
     return () => {
-      console.log('Unsubscribing from event type:', eventType);
       unsubscribe();
     };
-  }, [eventType, handler, eventBus]);
-}
+  }, [eventBus, eventType, handler]);
+};
 
 /**
  * Hook personalizado para publicar eventos.
@@ -36,19 +33,22 @@ export function useEventSubscription<T extends AppEvent>(
  * 
  * @returns Un objeto con la función publish para enviar eventos
  */
-export function useEventPublisher() {
+export const useEventPublisher = () => {
   const eventBus = useContext(EventContext);
 
-  const publish = useCallback(<T extends AppEvent>(event: T) => {
-    if (!eventBus) {
-      console.log('Event publishing skipped - EventBus not ready');
-      return;
-    }
-    return eventBus.publish(event);
-  }, [eventBus]);
+  const publish = useCallback(
+    <T extends AppEvent>(event: T) => {
+      if (!eventBus) {
+        console.warn('EventBus not found in context');
+        return;
+      }
+      eventBus.publish(event);
+    },
+    [eventBus]
+  );
 
   return { publish };
-}
+};
 
 /**
  * Hook personalizado para acceder al historial de eventos.
@@ -56,10 +56,7 @@ export function useEventPublisher() {
  * 
  * @returns Array con el historial de eventos
  */
-export function useEventHistory() {
+export const useEventHistory = () => {
   const eventBus = useContext(EventContext);
-  if (!eventBus) {
-    return [];
-  }
-  return eventBus.getHistory();
-}
+  return eventBus?.getHistory() || [];
+};

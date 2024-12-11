@@ -10,7 +10,7 @@ export function useRouteRegistration(
     const eventBus = EventBus.getInstance();
     
     // Registrar las rutas cuando el módulo se monta
-    eventBus.publish<RouteRegistrationEvent>({
+    const event: RouteRegistrationEvent = {
       type: 'ROUTE_REGISTRATION',
       timestamp: Date.now(),
       source: moduleId,
@@ -18,7 +18,9 @@ export function useRouteRegistration(
         moduleId,
         routes,
       },
-    });
+    };
+
+    eventBus.publish(event);
 
     // No es necesario limpiar ya que el RouteRegistry mantiene las rutas
   }, [moduleId, routes]);

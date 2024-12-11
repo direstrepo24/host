@@ -1,4 +1,4 @@
 export * from './EventBus';
 export * from './types';
-export * from './hooks';
+export { useEventSubscriber, useEventPublisher, useEventHistory } from './hooks';
 export * from './EventProvider';

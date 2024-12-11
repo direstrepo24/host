@@ -43,7 +43,7 @@ export default function Index() {
       source: 'module1',
       timestamp: Date.now(),
       payload: {
-        message: 'Important security update',
+        message: 'Important security update from Module 1',
         level: 'error' as NotificationLevel,
       },
     };
@@ -52,30 +52,16 @@ export default function Index() {
   }, [publish]);
 
   return (
-    <div className="p-8 max-w-6xl mx-auto space-y-8">
-      <div className="bg-white rounded-lg shadow-lg p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <FileText className="h-6 w-6 text-blue-500" />
-            <h1 className="text-2xl font-bold">Module 1</h1>
-          </div>
-          <Button
-            variant="primary"
-            onClick={handleTriggerEvent}
-            className="bg-blue-500 hover:bg-blue-600"
-          >
-            Trigger Event
-          </Button>
-        </div>
-        
-        <p className="text-gray-600">
-          This is Module 1, demonstrating the use of shared components, events system, and
-          neumorphic design.
-        </p>
-
+    <div className="container mx-auto py-8">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-bold">Module 1</h1>
+        <Button onClick={handleTriggerEvent}>
+          <FileText className="mr-2 h-4 w-4" />
+          Trigger Event
+        </Button>
       </div>
 
-      <div className="bg-white rounded-lg shadow-lg p-6">
+      <div className="bg-white rounded-lg shadow">
         <DataTable
           columns={columns}
           data={data}

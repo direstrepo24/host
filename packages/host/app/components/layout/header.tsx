@@ -1,6 +1,6 @@
-import React from 'react';
+import { Link } from '@remix-run/react';
 import { Bell } from 'lucide-react';
-import { useEventSubscription } from '@mk-modular/shared/events';
+import { useEventSubscriber } from '@mk-modular/shared/events';
 import type { NotificationEvent } from '@mk-modular/shared/events';
 import { Button } from '~/components/ui/button';
 import {
@@ -9,62 +9,94 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
-import { cn } from '~/lib/utils';
+import { useCallback, useState } from 'react';
 
-export const Header = () => {
-  const [notifications, setNotifications] = React.useState<Array<{
+interface AuthState {
+  isAuthenticated: boolean;
+  user: {
     id: string;
-    message: string;
-    level: string;
-    timestamp: number;
-  }>>([]);
+    role: string;
+    permissions: string[];
+  } | null;
+}
 
-  const [unreadCount, setUnreadCount] = React.useState(0);
+export function Header() {
+  const [authState, setAuthState] = useState<AuthState>({
+    isAuthenticated: false,
+    user: null,
+  });
 
-  const handleNotification = React.useCallback((event: NotificationEvent) => {
-    console.log('Header: Received notification event:', event);
-    const newNotification = {
-      id: Date.now().toString(),
-      message: event.payload.message,
-      level: event.payload.level,
-      timestamp: event.timestamp,
-    };
-    console.log('Header: Adding new notification:', newNotification);
-    setNotifications(prev => [newNotification, ...prev].slice(0, 5));
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notifications, setNotifications] = useState<NotificationEvent[]>([]);
+
+  const handleNotification = useCallback((event: NotificationEvent) => {
+    console.log('Header: Received notification:', event);
+    setNotifications(prev => [...prev, event]);
     setUnreadCount(prev => prev + 1);
   }, []);
 
-  useEventSubscription<NotificationEvent>('NOTIFICATION', handleNotification);
+  useEventSubscriber<NotificationEvent>('NOTIFICATION', handleNotification);
 
   const handleOpenNotifications = () => {
     setUnreadCount(0);
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center">
-        <div className="mr-4 flex">
-          <a className="mr-6 flex items-center space-x-2" href="/">
-            <span className="font-bold inline-block">Modular Remix</span>
-          </a>
-        </div>
+    <header className="bg-white shadow">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+            <Link to="/">Modular Remix</Link>
+          </h1>
+          <div className="flex items-center space-x-4">
+            {authState.isAuthenticated ? (
+              <>
+                <span className="text-gray-600">
+                  Welcome, {authState.user?.role}
+                </span>
+                <button
+                  onClick={() => {
+                    // Simulamos un logout
+                    setAuthState({
+                      isAuthenticated: false,
+                      user: null,
+                    });
+                  }}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  // Simulamos un login
+                  setAuthState({
+                    isAuthenticated: true,
+                    user: {
+                      id: '1',
+                      role: 'admin',
+                      permissions: ['read', 'write'],
+                    },
+                  });
+                }}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+              >
+                Login
+              </button>
+            )}
 
-        <div className="flex flex-1 items-center justify-between space-x-2">
-          <nav className="flex items-center space-x-6">
-            {/* Add navigation items here if needed */}
-          </nav>
-
-          <div className="flex items-center space-x-2">
             <DropdownMenu>
-              <DropdownMenuTrigger asChild onClick={handleOpenNotifications}>
+              <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
                   className="relative"
+                  onClick={handleOpenNotifications}
                 >
                   <Bell className="h-5 w-5" />
                   {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                       {unreadCount}
                     </span>
                   )}
@@ -72,29 +104,18 @@ export const Header = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-80">
                 {notifications.length === 0 ? (
-                  <DropdownMenuItem className="text-sm text-gray-500">
-                    No notifications
+                  <DropdownMenuItem disabled>
+                    No new notifications
                   </DropdownMenuItem>
                 ) : (
-                  notifications.map(notification => (
-                    <DropdownMenuItem key={notification.id} className="flex flex-col items-start p-3">
-                      <div className="flex items-center w-full">
-                        <span className={cn(
-                          "h-2 w-2 rounded-full mr-2",
-                          {
-                            'bg-blue-500': notification.level === 'info',
-                            'bg-green-500': notification.level === 'success',
-                            'bg-yellow-500': notification.level === 'warning',
-                            'bg-red-500': notification.level === 'error',
-                          }
-                        )} />
-                        <span className="flex-1 text-sm font-medium">
-                          {notification.message}
-                        </span>
-                        <span className="text-xs text-gray-500 ml-2">
-                          {new Date(notification.timestamp).toLocaleTimeString()}
-                        </span>
-                      </div>
+                  notifications.map((notification, index) => (
+                    <DropdownMenuItem key={index} className="flex flex-col items-start">
+                      <span className="font-medium">
+                        {notification.payload.message}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        From: {notification.source}
+                      </span>
                     </DropdownMenuItem>
                   ))
                 )}
@@ -105,4 +126,4 @@ export const Header = () => {
       </div>
     </header>
   );
-};
+}

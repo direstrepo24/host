@@ -14,7 +14,7 @@ export default function Module2() {
       source: "module2",
       timestamp: Date.now(),
       payload: {
-        message: "New feature available",
+        message: "New feature available in Module 2",
         level: "info" as NotificationLevel,
       },
     };
