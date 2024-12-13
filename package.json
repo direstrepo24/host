@@ -4,15 +4,16 @@
   "sideEffects": false,
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "packages/modules/*"
   ],
   "scripts": {
     "build": "pnpm run -r build",
     "dev": "pnpm run --parallel dev",
-    "dev:host": "pnpm run --filter host dev",
-    "dev:module1": "pnpm run --filter module1 dev",
-    "dev:module2": "pnpm run --filter module2 dev",
-    "start": "pnpm run --filter host start",
+    "dev:host": "pnpm run --filter @mk-modular/host dev",
+    "dev:module1": "pnpm run --filter @mk-modular/module1 dev",
+    "dev:module2": "pnpm run --filter @mk-modular/module2 dev",
+    "start": "pnpm run --filter @mk-modular/host start",
     "typecheck": "pnpm run -r typecheck"
   },
   "devDependencies": {

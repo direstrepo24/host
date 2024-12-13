@@ -22,9 +22,11 @@
   },
   "dependencies": {
     "@mk-modular/shared": "workspace:*",
+    "@remix-run/css-bundle": "^2.3.0",
     "@remix-run/node": "^2.3.0",
     "@remix-run/react": "^2.3.0",
     "@remix-run/serve": "^2.3.0",
+    "@tanstack/react-table": "^8.20.5",
     "isbot": "^4.1.0",
     "lucide-react": "^0.294.0",
     "react": "^18.2.0",

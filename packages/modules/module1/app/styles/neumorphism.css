@@ -1,0 +1,36 @@
+.neumorphic-table {
+  background: #e0e5ec;
+  border-radius: 15px;
+  box-shadow: 8px 8px 15px #a3b1c6,
+             -8px -8px 15px #ffffff;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.neumorphic-table th {
+  color: #2d3748;
+  font-weight: 600;
+  padding: 12px 20px;
+  text-align: left;
+  background: #e0e5ec;
+  border-radius: 10px;
+  box-shadow: inset 5px 5px 10px #a3b1c6,
+              inset -5px -5px 10px #ffffff;
+}
+
+.neumorphic-table td {
+  padding: 12px 20px;
+  color: #4a5568;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.neumorphic-table tbody tr:hover td {
+  background: #e8ecf3;
+  box-shadow: inset 3px 3px 7px #a3b1c6,
+              inset -3px -3px 7px #ffffff;
+}
+
+.neumorphic-table tbody tr {
+  margin: 10px 0;
+}

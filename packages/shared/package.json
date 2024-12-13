@@ -31,21 +31,6 @@
       "types": "./dist/routing/index.d.ts",
       "import": "./dist/routing/index.js",
       "require": "./dist/routing/index.cjs"
-    },
-    "./components/Breadcrumbs": {
-      "types": "./dist/components/Breadcrumbs.d.ts",
-      "import": "./dist/components/Breadcrumbs.js",
-      "require": "./dist/components/Breadcrumbs.cjs"
-    },
-    "./hooks/moduleLifecycle": {
-      "types": "./dist/hooks/moduleLifecycle.d.ts",
-      "import": "./dist/hooks/moduleLifecycle.js",
-      "require": "./dist/hooks/moduleLifecycle.cjs"
-    },
-    "./middleware/auth": {
-      "types": "./dist/middleware/auth.d.ts",
-      "import": "./dist/middleware/auth.js",
-      "require": "./dist/middleware/auth.cjs"
     }
   },
   "scripts": {
@@ -57,7 +42,8 @@
     "@tanstack/react-table": "^8.20.5",
     "clsx": "^2.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^2.2.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.20",

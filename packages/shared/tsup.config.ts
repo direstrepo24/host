@@ -16,5 +16,12 @@ export default defineConfig({
   external: ['react', 'react-dom', '@remix-run/node', '@remix-run/react'],
   treeshake: true,
   sourcemap: true,
-  jsx: true
+  jsx: true,
+  loader: {
+    '.css': 'copy'
+  },
+  outDir: 'dist',
+  esbuildOptions(options) {
+    options.assetNames = 'assets/[name]';
+  }
 });
