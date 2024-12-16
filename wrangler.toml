@@ -2,17 +2,11 @@ name = "mk-modular-remix"
 main = "./packages/host/build/index.js"
 compatibility_date = "2023-12-16"
 
-[build]
-command = "pnpm build"
-watch_dir = "packages"
-
 [site]
 bucket = "./packages/host/public"
 
-[env.production]
-name = "mk-modular-remix-prod"
-route = "mk-modular-remix.yourdomain.com/*"
+[build]
+command = "pnpm build"
 
-[env.staging]
-name = "mk-modular-remix-staging"
-route = "staging.mk-modular-remix.yourdomain.com/*"
+[vars]
+NODE_ENV = "production"

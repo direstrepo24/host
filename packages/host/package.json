@@ -1,30 +1,33 @@
 {
-  "name": "@mk-modular/host",
+  "name": "host",
   "private": true,
   "sideEffects": false,
   "type": "module",
   "scripts": {
     "build": "remix build",
-    "dev": "remix dev --manual",
-    "start": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "typecheck": "tsc"
+    "dev": "remix dev --manual -c \"npm run start\"",
+    "start": "wrangler dev ./build/index.js",
+    "typecheck": "tsc",
+    "deploy": "wrangler deploy ./build/index.js"
   },
   "dependencies": {
-    "@remix-run/cloudflare": "^2.3.1",
-    "@remix-run/cloudflare-workers": "^2.3.1",
-    "@remix-run/react": "^2.3.1",
+    "@remix-run/cloudflare": "^2.4.0",
+    "@remix-run/css-bundle": "^2.4.0",
+    "@remix-run/react": "^2.4.0",
+    "isbot": "^3.7.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "@mk-modular/module1": "workspace:*",
+    "@mk-modular/module2": "workspace:*"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231218.0",
-    "@remix-run/dev": "^2.3.1",
-    "@remix-run/eslint-config": "^2.3.1",
-    "@types/react": "^18.2.20",
-    "@types/react-dom": "^18.2.7",
-    "tailwindcss": "^3.3.5",
-    "typescript": "^5.1.6",
+    "@remix-run/dev": "^2.4.0",
+    "@remix-run/eslint-config": "^2.4.0",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
     "wrangler": "^3.22.1"
   },
   "engines": {

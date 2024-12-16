@@ -1,15 +1,13 @@
-import { createEventHandler } from "@remix-run/cloudflare-workers";
+import { logDevReady } from "@remix-run/cloudflare";
+import { createPagesFunctionHandler } from "@remix-run/cloudflare-pages";
 import * as build from "@remix-run/dev/server-build";
 
-const handleRequest = createEventHandler({ build, mode: process.env.NODE_ENV });
+if (process.env.NODE_ENV === "development") {
+  logDevReady(build);
+}
 
-export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext) {
-    try {
-      return await handleRequest(request, env, ctx);
-    } catch (error) {
-      console.error("Error handling request:", error);
-      return new Response("Internal Server Error", { status: 500 });
-    }
-  },
-};
+export const onRequest = createPagesFunctionHandler({
+  build,
+  mode: process.env.NODE_ENV,
+  getLoadContext: (context) => context.env,
+});
