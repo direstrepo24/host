@@ -35,6 +35,44 @@ mk-modular-remix/
    - Pueden ser desarrollados y desplegados independientemente
    - Se comunican a través del sistema de eventos
 
+## Manejo de Estilos
+
+La aplicación utiliza Tailwind CSS para estilos con una configuración centralizada en la aplicación host:
+
+### Configuración de Tailwind en el Host
+
+- Ubicada en `packages/host/tailwind.config.ts`
+- Controla estilos para toda la aplicación
+- Incluye rutas a todos los módulos y componentes compartidos
+- Define estilos personalizados y extensiones de tema
+
+```typescript
+// packages/host/tailwind.config.ts
+{
+  content: [
+    "./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}",
+    "../modules/module1/app/**/*.{js,jsx,ts,tsx}",
+    "../modules/module2/app/**/*.{js,jsx,ts,tsx}",
+    "../shared/src/**/*.{js,jsx,ts,tsx}"
+  ],
+  theme: {
+    extend: {
+      // Estilos personalizados como sombras neumórficas
+      boxShadow: {
+        'neumorphic': '20px 20px 60px #bebebe, -20px -20px 60px #ffffff',
+        'neumorphic-inset': 'inset 20px 20px 60px #bebebe, inset -20px -20px 60px #ffffff',
+      }
+    }
+  }
+}
+```
+
+### Directrices de Estilos
+- Todos los estilos personalizados deben definirse en la configuración de Tailwind del host
+- Los componentes compartidos usan clases de Tailwind para estilos consistentes
+- Los módulos no deben definir sus propias configuraciones de Tailwind
+- Use los componentes compartidos para mantener la consistencia de estilos en los módulos
+
 ## Sistema de Eventos
 
 El sistema de eventos es una parte crucial de la arquitectura que permite la comunicación desacoplada entre módulos.

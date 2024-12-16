@@ -5,7 +5,9 @@ export default {
   darkMode: ["class"],
   content: [
     "./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}",
-    "../module1/app/**/*.{js,jsx,ts,tsx}",
+    "../modules/module1/app/**/*.{js,jsx,ts,tsx}",
+    "../modules/module2/app/**/*.{js,jsx,ts,tsx}",
+    "../shared/src/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
     container: {
@@ -16,6 +18,10 @@ export default {
       },
     },
     extend: {
+      boxShadow: {
+        'neumorphic': '20px 20px 60px #bebebe, -20px -20px 60px #ffffff',
+        'neumorphic-inset': 'inset 20px 20px 60px #bebebe, inset -20px -20px 60px #ffffff',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

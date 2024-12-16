@@ -76,18 +76,32 @@ Types:
 
 ## Style Guide
 
-- Follow the existing code style
-- Use Prettier for code formatting
-- Follow TypeScript best practices
-- Use meaningful variable and function names
-- Write clear comments for complex logic
+### CSS and Styling
+- Use Tailwind CSS for all styling needs
+- Custom styles should be defined in the host's `tailwind.config.ts`
+- Never create module-specific Tailwind configurations
+- Use shared components to maintain style consistency
+- Follow the neumorphic design system when applicable
 
-## Working with Modules
+### Component Development
+- Create reusable components in the shared package
+- Use Tailwind classes for styling
+- Maintain consistent naming conventions
+- Document component props and usage
+- Include examples in component documentation
 
+### Working with Modules
 1. Each module should be self-contained
 2. Use shared components from the shared package
 3. Follow the established event system for inter-module communication
-4. Maintain consistent styling using Tailwind CSS
+4. Maintain consistent styling using Tailwind CSS classes defined in the host
+
+### Styling Best Practices
+1. Use Tailwind's utility classes whenever possible
+2. Custom styles should be defined in the host's theme configuration
+3. Maintain a consistent color palette and spacing system
+4. Follow accessibility guidelines
+5. Test components across different screen sizes
 
 ## Questions or Problems?
 
