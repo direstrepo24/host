@@ -1,3 +1,60 @@
+# Modular Remix Application
+
+## Overview
+A modular Remix application that leverages a monorepo structure with pnpm workspaces. The project implements an event system for communication between modules and provides shared components for consistent development.
+
+## Project Structure
+```
+mk-modular-remix/
+├── packages/
+│   ├── host/           # Main application host
+│   ├── shared/         # Shared components and utilities
+│   └── modules/        # Individual feature modules
+├── docs/              # Documentation
+└── tools/             # Development and build tools
+```
+
+## Key Features
+- Modular architecture
+- Event-based communication
+- Shared component library
+- Cloudflare Workers deployment
+- Responsive design
+- Comprehensive testing
+
+## Documentation
+- [Architecture Overview](./ARCHITECTURE.md)
+- [Development Roadmap](./ROADMAP.md)
+- [Contributing Guidelines](./CONTRIBUTING.md)
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v18 or later)
+- pnpm (v8 or later)
+- Cloudflare Workers account (for deployment)
+
+### Installation
+```bash
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Run tests
+pnpm test
+```
+
+## Development
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for development guidelines and best practices.
+
+## License
+MIT
+
 # Modular Remix Application (PoC)
 
 Este proyecto es una prueba de concepto (PoC) que demuestra una arquitectura modular en una aplicación Remix, utilizando un monorepo con pnpm workspaces. La aplicación implementa un sistema de eventos para la comunicación entre módulos y un sistema de notificaciones compartido.
