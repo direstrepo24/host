@@ -9,9 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: packages/host
     steps:
       - uses: actions/checkout@v3
       
@@ -27,14 +24,23 @@ jobs:
           
       - name: Install dependencies
         run: |
-          cd ../..
           pnpm install
+          pnpm add -D tailwindcss-animate
+
+      - name: Build shared modules
+        run: |
+          cd packages/shared
+          pnpm build
+          cd ../module1
+          pnpm build
+          cd ../module2
+          pnpm build
         
-      - name: Clean previous builds
-        run: rm -rf build public/build
-        
-      - name: Build
-        run: pnpm build
+      - name: Build host
+        run: |
+          cd packages/host
+          rm -rf build public/build
+          pnpm build
 
       - name: Cache build artifacts
         uses: actions/cache@v3
@@ -48,10 +54,6 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: packages/host
-    environment: production
     steps:
       - uses: actions/checkout@v3
       
@@ -67,8 +69,8 @@ jobs:
           
       - name: Install dependencies
         run: |
-          cd ../..
           pnpm install
+          pnpm add -D tailwindcss-animate
 
       - name: Restore build artifacts
         uses: actions/cache@v3
@@ -83,10 +85,11 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
         run: |
-          echo "Using production configuration..."
+          cd packages/host
           pnpm deploy:production
           
       - name: Verify Deployment
         run: |
           echo " Deployed to https://mk-modular-remix.direstrepobr.workers.dev"
+          sleep 30  # Dar tiempo a que el despliegue se propague
           curl -s -o /dev/null -w "%{http_code}" https://mk-modular-remix.direstrepobr.workers.dev
