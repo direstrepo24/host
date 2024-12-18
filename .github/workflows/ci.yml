@@ -49,22 +49,13 @@ jobs:
           done
 
       # Finalmente construimos y desplegamos host
-      - name: Build and deploy host
+      - name: Deploy to production
         if: github.ref == 'refs/heads/main'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
         run: |
+          echo "Starting deployment process..."
           cd packages/host
-          
-          # Limpiar builds anteriores
-          rm -rf build public/build
-          
-          # Verificar configuración
-          echo "Checking configuration files..."
-          ls -la
-          echo "Production configuration:"
-          cat wrangler.production.toml
-          
-          echo "Starting deployment..."
+          echo "Running deployment command..."
           pnpm deploy:production
