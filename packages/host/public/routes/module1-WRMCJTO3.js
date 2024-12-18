@@ -1,0 +1,1 @@
+import{b as o}from"/build/_shared/chunk-GTQMRRHT.js";import{c as e,e as t}from"/build/_shared/chunk-XWFLGTVX.js";var a=e(t(),1);function l(){return(0,a.jsx)("div",{className:"min-h-screen bg-gray-50",children:(0,a.jsx)("div",{className:"max-w-7xl mx-auto py-6 sm:px-6 lg:px-8",children:(0,a.jsx)(o,{})})})}export{l as default};

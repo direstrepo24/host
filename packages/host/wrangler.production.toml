@@ -10,7 +10,7 @@ command = "pnpm build"
 format = "modules"
 
 [site]
-bucket = "./public"
+bucket = "public"
 
 [env.production]
 name = "mk-modular-remix"

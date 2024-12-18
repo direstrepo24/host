@@ -41,7 +41,7 @@ export default function Index() {
       source: 'module1',
       timestamp: Date.now(),
       payload: {
-        message: 'Important security update from Module 1',
+        message: '¡Hola desde el Módulo 1! - Prueba de CI/CD',
         level: 'error' as NotificationLevel,
       },
     };

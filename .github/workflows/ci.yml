@@ -30,32 +30,29 @@ jobs:
       # Primero construimos shared ya que otros módulos dependen de él
       - name: Build shared package
         run: |
-          echo "Building shared package first..."
           cd packages/shared
           pnpm build
           cd ../..
 
-      # Luego construimos todos los otros módulos excepto host y shared
-      - name: Build other modules
+      # Luego construimos todos los módulos
+      - name: Build modules
         run: |
-          echo "Looking for modules to build..."
-          for module in packages/module*; do
+          cd packages/modules
+          for module in *; do
             if [ -d "$module" ]; then
-              echo "Building $module..."
               cd "$module"
               pnpm build
-              cd ../..
+              cd ..
             fi
           done
+          cd ../..
 
-      # Finalmente construimos y desplegamos host
+      # Finalmente desplegamos host usando el mismo comando que funciona en local
       - name: Deploy to production
         if: github.ref == 'refs/heads/main'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
         run: |
-          echo "Starting deployment process..."
           cd packages/host
-          echo "Running deployment command..."
           pnpm deploy:production

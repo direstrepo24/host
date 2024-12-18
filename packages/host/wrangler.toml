@@ -10,4 +10,4 @@ command = "pnpm build"
 format = "modules"
 
 [site]
-bucket = "./public"
+bucket = "public"
