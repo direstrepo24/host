@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -23,73 +23,27 @@ jobs:
           version: 8
           
       - name: Install dependencies
-        run: |
-          pnpm install
-          pnpm add -D tailwindcss-animate
+        run: pnpm install
 
-      - name: Build shared modules
-        run: |
-          cd packages/shared
-          pnpm build
-          cd ../module1
-          pnpm build
-          cd ../module2
-          pnpm build
-        
-      - name: Build host
-        run: |
-          cd packages/host
-          rm -rf build public/build
-          pnpm build
+      # Build shared modules first
+      - name: Build shared package
+        working-directory: packages/shared
+        run: pnpm build
 
-      - name: Cache build artifacts
-        uses: actions/cache@v3
-        with:
-          path: |
-            packages/host/build
-            packages/host/public/build
-          key: ${{ runner.os }}-build-${{ github.sha }}
+      - name: Build module1
+        working-directory: packages/module1
+        run: pnpm build
 
-  deploy-production:
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          
-      - name: Install dependencies
-        run: |
-          pnpm install
-          pnpm add -D tailwindcss-animate
+      - name: Build module2
+        working-directory: packages/module2
+        run: pnpm build
 
-      - name: Restore build artifacts
-        uses: actions/cache@v3
-        with:
-          path: |
-            packages/host/build
-            packages/host/public/build
-          key: ${{ runner.os }}-build-${{ github.sha }}
-        
-      - name: Deploy to Cloudflare Workers
+      # Finally build and deploy host
+      - name: Build and deploy host
+        if: github.ref == 'refs/heads/main'
+        working-directory: packages/host
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
         run: |
-          cd packages/host
           pnpm deploy:production
-          
-      - name: Verify Deployment
-        run: |
-          echo " Deployed to https://mk-modular-remix.direstrepobr.workers.dev"
-          sleep 30  # Dar tiempo a que el despliegue se propague
-          curl -s -o /dev/null -w "%{http_code}" https://mk-modular-remix.direstrepobr.workers.dev
