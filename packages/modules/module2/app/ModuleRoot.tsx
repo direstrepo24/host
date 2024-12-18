@@ -1,7 +1,8 @@
 import { useRouteRegistration } from '@mk-modular/shared';
 import { Breadcrumbs } from '@mk-modular/shared';
 import { useModuleMount, useModuleUnmount } from '@mk-modular/shared';
-import { useEventSubscriber } from '@mk-modular/shared/events';
+import { useEventSubscription } from '@mk-modular/shared/events';
+import type { AuthStateChangeEvent } from '@mk-modular/shared/events';
 import { ModuleLayout } from './components/ModuleLayout';
 import { HomePage } from './pages/HomePage';
 import { DetailsPage } from './pages/DetailsPage';
@@ -28,7 +29,7 @@ export function ModuleRoot({ version, buildTime }: ModuleRootProps) {
   });
 
   // Suscribirse a eventos de autenticación
-  useEventSubscriber('AUTH_STATE_CHANGE', (event) => {
+  useEventSubscription('AUTH_STATE_CHANGE', (event: AuthStateChangeEvent) => {
     console.log('Module2: Received auth state change', event);
     setAuthState({
       isAuthenticated: event.payload.isAuthenticated,

@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useContext } from 'react';
+import { useCallback, useEffect } from 'react';
 import type { AppEvent, EventHandler } from './types';
 import { useEventBus } from './EventProvider';
 
@@ -38,12 +38,10 @@ export function useEventPublisher() {
 }
 
 /**
- * Hook personalizado para acceder al historial de eventos.
- * Útil para debugging y monitoreo del sistema de eventos.
- * 
+ * Hook para acceder al historial de eventos.
  * @returns Array con el historial de eventos
  */
-export const useEventHistory = () => {
+export function useEventHistory() {
   const eventBus = useEventBus();
   return eventBus?.getHistory() || [];
-};
+}

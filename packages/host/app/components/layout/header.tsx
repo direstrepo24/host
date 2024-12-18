@@ -1,6 +1,6 @@
 import { Link } from '@remix-run/react';
 import { Bell } from 'lucide-react';
-import { useEventSubscriber } from '@mk-modular/shared/events';
+import { useEventSubscription } from '@mk-modular/shared/events';
 import type { NotificationEvent } from '@mk-modular/shared/events';
 import { Button } from '~/components/ui/button';
 import {
@@ -35,7 +35,7 @@ export function Header() {
     setUnreadCount(prev => prev + 1);
   }, []);
 
-  useEventSubscriber<NotificationEvent>('NOTIFICATION', handleNotification);
+  useEventSubscription<NotificationEvent>('NOTIFICATION', handleNotification);
 
   const handleOpenNotifications = () => {
     setUnreadCount(0);
