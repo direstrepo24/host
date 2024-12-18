@@ -13,7 +13,7 @@ export class EventBus {
   private constructor() {
     this.subscribers = new Map();
     this.eventHistory = [];
-    this.maxHistorySize = 100; // Limitamos el historial para evitar fugas de memoria
+    this.maxHistorySize = 100;
   }
 
   /**
@@ -21,6 +21,10 @@ export class EventBus {
    * Si no existe, crea una nueva instancia.
    */
   public static getInstance(): EventBus {
+    if (typeof window === 'undefined') {
+      throw new Error('EventBus can only be initialized in the browser');
+    }
+    
     if (!EventBus.instance) {
       EventBus.instance = new EventBus();
     }
@@ -44,7 +48,6 @@ export class EventBus {
     const handlers = this.subscribers.get(eventType)!;
     handlers.add(handler as EventHandler<AppEvent>);
 
-    // Retornamos una función para desuscribirse
     return () => {
       handlers.delete(handler as EventHandler<AppEvent>);
       if (handlers.size === 0) {
@@ -58,27 +61,29 @@ export class EventBus {
    * @param event - El evento a publicar
    */
   public async publish<T extends AppEvent>(event: T): Promise<void> {
-    console.log('EventBus: Publishing event:', event);
-    // Agregamos metadata al evento
-    const enrichedEvent = {
-      ...event,
-      timestamp: Date.now(),
-    };
+    try {
+      const enrichedEvent = {
+        ...event,
+        timestamp: event.timestamp || Date.now(),
+      };
 
-    // Guardamos en el historial
-    this.addToHistory(enrichedEvent);
+      this.addToHistory(enrichedEvent);
 
-    // Notificamos a los suscriptores
-    const handlers = this.subscribers.get(event.type);
-    console.log('EventBus: Found handlers:', handlers ? handlers.size : 0);
-    
-    if (handlers) {
-      await Promise.all(
-        Array.from(handlers).map((handler) => {
-          console.log('EventBus: Calling handler for event:', event.type);
-          return Promise.resolve(handler(enrichedEvent));
-        })
-      );
+      const handlers = this.subscribers.get(event.type);
+      
+      if (handlers && handlers.size > 0) {
+        await Promise.all(
+          Array.from(handlers).map(async (handler) => {
+            try {
+              await handler(enrichedEvent);
+            } catch (error) {
+              console.error('Error in event handler:', error);
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.error('Error publishing event:', error);
     }
   }
 

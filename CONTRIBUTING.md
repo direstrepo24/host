@@ -1,116 +1,125 @@
-# Contributing to Modular Remix Project
+# Guía de Contribución
 
-First off, thank you for considering contributing to our project! It's people like you that make this project such a great tool.
+## Desarrollo Local
 
-## Code of Conduct
-
-This project and everyone participating in it is governed by our Code of Conduct. By participating, you are expected to uphold this code.
-
-## Development Process
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes following our commit message conventions
-4. Push to your branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Branch Strategy
-
-- `main`: Production branch
-- `dev`: Development branch
-- Feature branches: `feature/feature-name`
-- Bug fix branches: `fix/bug-fix-name`
-
-### Commit Message Format
-
-We follow the conventional commits specification:
-
-```
-<type>(<scope>): <description>
-
-[optional body]
-
-[optional footer]
+1. Clonar el repositorio:
+```bash
+git clone https://github.com/tu-usuario/mk-modular-remix.git
+cd mk-modular-remix
 ```
 
-Types:
-- feat: A new feature
-- fix: A bug fix
-- docs: Documentation only changes
-- style: Changes that do not affect the meaning of the code
-- refactor: A code change that neither fixes a bug nor adds a feature
-- perf: A code change that improves performance
-- test: Adding missing tests or correcting existing tests
-- chore: Changes to the build process or auxiliary tools
+2. Instalar dependencias:
+```bash
+pnpm install
+```
 
-### Pull Request Process
+3. Construir todos los paquetes:
+```bash
+pnpm build
+```
 
-1. Update the README.md with details of changes to the interface
-2. Update the documentation with any necessary changes
-3. The PR must pass all CI/CD checks
-4. You must get at least one approval from a core team member
+4. Iniciar el servidor de desarrollo:
+```bash
+cd packages/host
+pnpm start
+```
 
-### Testing Requirements
+## Estructura de Carpetas
 
-- Write unit tests for new features
-- Ensure all tests pass locally before pushing
-- Maintain or improve code coverage
-- Include both positive and negative test cases
+```
+mk-modular-remix/
+├── packages/
+│   ├── host/               # Aplicación principal
+│   │   ├── app/           # Código fuente de la aplicación
+│   │   ├── public/        # Assets estáticos
+│   │   ├── wrangler.toml  # Configuración de desarrollo
+│   │   └── wrangler.production.toml  # Configuración de producción
+│   │
+│   ├── modules/           # Módulos de la aplicación
+│   │   ├── module1/      # Módulo de ejemplo 1
+│   │   │   ├── app/     # Código fuente del módulo
+│   │   │   └── public/  # Assets estáticos del módulo
+│   │   └── module2/     # Módulo de ejemplo 2
+│   │
+│   └── shared/           # Código compartido
+│       └── src/         # Utilidades, componentes y tipos compartidos
+```
 
-## Development Setup
+## Flujo de Trabajo
 
-1. Install dependencies:
-   ```bash
-   pnpm install
-   ```
+1. Crear una rama para tu feature:
+```bash
+git checkout -b feature/nombre-feature
+```
 
-2. Run the development server:
-   ```bash
-   pnpm dev
-   ```
+2. Hacer commits con mensajes descriptivos siguiendo Conventional Commits:
+```bash
+git commit -m "feat: add new feature"
+git commit -m "fix: resolve bug in module1"
+```
 
-3. Run tests:
-   ```bash
-   pnpm test
-   ```
+3. Pushear los cambios y crear un Pull Request
 
-## Style Guide
+## Convenciones de Código
 
-### CSS and Styling
-- Use Tailwind CSS for all styling needs
-- Custom styles should be defined in the host's `tailwind.config.ts`
-- Never create module-specific Tailwind configurations
-- Use shared components to maintain style consistency
-- Follow the neumorphic design system when applicable
+- Usar TypeScript para todo el código
+- Seguir el estilo de código existente
+- Documentar funciones y componentes nuevos
+- Agregar tests para nuevas funcionalidades
 
-### Component Development
-- Create reusable components in the shared package
-- Use Tailwind classes for styling
-- Maintain consistent naming conventions
-- Document component props and usage
-- Include examples in component documentation
+## Pruebas Locales
 
-### Working with Modules
-1. Each module should be self-contained
-2. Use shared components from the shared package
-3. Follow the established event system for inter-module communication
-4. Maintain consistent styling using Tailwind CSS classes defined in the host
+1. Construir y probar localmente:
+```bash
+pnpm build
+cd packages/host
+pnpm start
+```
 
-### Styling Best Practices
-1. Use Tailwind's utility classes whenever possible
-2. Custom styles should be defined in the host's theme configuration
-3. Maintain a consistent color palette and spacing system
-4. Follow accessibility guidelines
-5. Test components across different screen sizes
+2. Verificar que los assets estáticos se cargan correctamente
+3. Probar la integración con otros módulos
 
-## Questions or Problems?
+## CI/CD
 
-Feel free to open an issue for:
-- Bug reports
-- Feature requests
-- Help wanted
-- Questions about the development process
+El proyecto usa GitHub Actions para:
+1. Construir todos los paquetes
+2. Ejecutar pruebas
+3. Desplegar a Cloudflare Workers
 
-## License
+Asegúrate de que tu PR pase todas las verificaciones antes de solicitar revisión.
 
-By contributing, you agree that your contributions will be licensed under the same license as the project.
+## Despliegue
+
+### Desarrollo
+```bash
+cd packages/host
+pnpm start
+```
+
+### Staging
+```bash
+cd packages/host
+pnpm deploy:staging
+```
+
+### Producción
+```bash
+cd packages/host
+pnpm deploy:production
+```
+
+## Problemas Comunes
+
+### Assets Estáticos
+- Asegúrate de que los assets estén en el directorio `public`
+- Verifica la configuración de `wrangler.toml`
+
+### Módulos
+- Los módulos deben exportar sus rutas correctamente
+- Usar el paquete `shared` para código común
+
+## Recursos Adicionales
+
+- [Documentación de Remix](https://remix.run/docs)
+- [Documentación de Cloudflare Workers](https://developers.cloudflare.com/workers/)
+- [pnpm Workspaces](https://pnpm.io/workspaces)
