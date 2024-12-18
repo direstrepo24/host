@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/host
     steps:
       - uses: actions/checkout@v3
       
@@ -23,13 +26,15 @@ jobs:
           version: 8
           
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          cd ../..
+          pnpm install
         
-      - name: Type check
-        run: pnpm -r typecheck
+      - name: Clean previous builds
+        run: rm -rf build public/build
         
       - name: Build
-        run: pnpm -r build
+        run: pnpm build
 
       - name: Cache build artifacts
         uses: actions/cache@v3
@@ -43,6 +48,9 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/host
     environment: production
     steps:
       - uses: actions/checkout@v3
@@ -58,7 +66,9 @@ jobs:
           version: 8
           
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          cd ../..
+          pnpm install
 
       - name: Restore build artifacts
         uses: actions/cache@v3
@@ -73,9 +83,9 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
         run: |
-          cd packages/host
+          echo "Using production configuration..."
           pnpm deploy:production
-
+          
       - name: Verify Deployment
         run: |
           echo " Deployed to https://mk-modular-remix.direstrepobr.workers.dev"

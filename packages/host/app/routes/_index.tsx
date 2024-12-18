@@ -15,7 +15,7 @@ export default function Index() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8">
-            🚀 Modular Remix App - Deployed via GitHub Actions!
+            🚀 Modular Remix App - CI/CD Test
           </h1>
           <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
             Welcome to our modular Remix application. Select a module below to get started.
