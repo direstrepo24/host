@@ -9,8 +9,13 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/host
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -22,28 +27,34 @@ jobs:
         with:
           version: 8
           
-      - name: Install dependencies
+      - name: Install root dependencies
+        working-directory: .
         run: pnpm install
 
-      # Build shared modules first
       - name: Build shared package
-        working-directory: packages/shared
+        working-directory: ../shared
         run: pnpm build
 
       - name: Build module1
-        working-directory: packages/module1
+        working-directory: ../module1
         run: pnpm build
 
       - name: Build module2
-        working-directory: packages/module2
+        working-directory: ../module2
         run: pnpm build
 
-      # Finally build and deploy host
+      - name: Clean previous builds
+        run: rm -rf build public/build
+
       - name: Build and deploy host
         if: github.ref == 'refs/heads/main'
-        working-directory: packages/host
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
         run: |
+          # Verificar que los archivos de configuración existen
+          ls -la
+          echo "Using production configuration..."
+          cat wrangler.production.toml
+          echo "Starting deployment..."
           pnpm deploy:production
