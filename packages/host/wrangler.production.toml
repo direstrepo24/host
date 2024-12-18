@@ -1,0 +1,17 @@
+name = "mk-modular-remix"
+main = "build/index.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[build]
+command = "pnpm build"
+
+[[build.upload]]
+format = "modules"
+
+[site]
+bucket = "./public"
+
+[env.production]
+name = "mk-modular-remix"
+workers_dev = true
