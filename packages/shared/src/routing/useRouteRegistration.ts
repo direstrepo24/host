@@ -8,7 +8,8 @@ export function useRouteRegistration(
 ) {
   useEffect(() => {
     const eventBus = EventBus.getInstance();
-    
+    if (!eventBus) return;
+
     // Registrar las rutas cuando el módulo se monta
     const event: RouteRegistrationEvent = {
       type: 'ROUTE_REGISTRATION',

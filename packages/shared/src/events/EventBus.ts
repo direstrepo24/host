@@ -20,9 +20,10 @@ export class EventBus {
    * Obtiene la instancia única del EventBus.
    * Si no existe, crea una nueva instancia.
    */
-  public static getInstance(): EventBus {
+  public static getInstance(): EventBus | null {
+    // En el servidor, retornamos null en lugar de lanzar un error
     if (typeof window === 'undefined') {
-      throw new Error('EventBus can only be initialized in the browser');
+      return null;
     }
     
     if (!EventBus.instance) {

@@ -13,12 +13,14 @@ interface RegisteredRoute {
 class RouteRegistry {
   private static instance: RouteRegistry;
   private routes: Map<string, RegisteredRoute[]>;
-  private eventBus: EventBus;
+  private eventBus: EventBus | null;
 
   private constructor() {
     this.routes = new Map();
     this.eventBus = EventBus.getInstance();
-    this.initializeEventListeners();
+    if (this.eventBus) {
+      this.initializeEventListeners();
+    }
   }
 
   public static getInstance(): RouteRegistry {
@@ -29,6 +31,8 @@ class RouteRegistry {
   }
 
   private initializeEventListeners(): void {
+    if (!this.eventBus) return;
+    
     this.eventBus.subscribe<RouteRegistrationEvent>('ROUTE_REGISTRATION', (event) => {
       const { moduleId, routes } = event.payload;
       this.registerModuleRoutes(moduleId, routes);
@@ -52,22 +56,15 @@ class RouteRegistry {
   }
 }
 
-export const useRegisteredRoutes = () => {
+export function useRegisteredRoutes() {
   const [routes, setRoutes] = useState<RegisteredRoute[]>([]);
-  
+
   useEffect(() => {
     const registry = RouteRegistry.getInstance();
     setRoutes(registry.getAllRoutes());
-    
-    // Suscribirse a cambios en las rutas
-    const unsubscribe = EventBus.getInstance().subscribe('ROUTE_REGISTRATION', () => {
-      setRoutes(registry.getAllRoutes());
-    });
-
-    return () => unsubscribe();
   }, []);
 
   return routes;
-};
+}
 
 export default RouteRegistry;

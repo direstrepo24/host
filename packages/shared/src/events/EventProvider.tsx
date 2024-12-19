@@ -11,9 +11,7 @@ export const EventContext = React.createContext<EventBus | null>(null);
  */
 export const useEventBus = () => {
   const context = React.useContext(EventContext);
-  if (!context) {
-    throw new Error('useEventBus must be used within an EventProvider');
-  }
+  // No lanzamos error si no hay contexto, ya que puede ser null en el servidor
   return context;
 };
 
@@ -28,13 +26,11 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   React.useEffect(() => {
     // Inicializar el EventBus solo en el cliente
-    setEventBus(EventBus.getInstance());
+    const bus = EventBus.getInstance();
+    if (bus) {
+      setEventBus(bus);
+    }
   }, []);
-
-  // En el servidor o durante la hidratación inicial, renderizar los children sin el contexto
-  if (!eventBus) {
-    return <>{children}</>;
-  }
 
   return (
     <EventContext.Provider value={eventBus}>

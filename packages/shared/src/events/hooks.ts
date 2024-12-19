@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import type { AppEvent, EventHandler } from './types';
+import { AppEvent, EventHandler } from './types';
 import { useEventBus } from './EventProvider';
 
 /**
@@ -28,7 +28,7 @@ export function useEventPublisher() {
 
   const publish = useCallback(<T extends AppEvent>(event: T) => {
     if (!eventBus) {
-      console.warn('EventBus not initialized');
+      // En el servidor o durante la hidratación, simplemente ignoramos los eventos
       return;
     }
     return eventBus.publish(event);
