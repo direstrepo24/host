@@ -15,3 +15,8 @@ bucket = "public"
 [env.production]
 name = "mk-modular-remix"
 workers_dev = true
+
+# Configuración de analytics
+analytics_engine_datasets = [
+  { binding = "MK_ANALYTICS", dataset = "mk_modular_remix_analytics" }
+]

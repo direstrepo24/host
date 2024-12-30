@@ -11,3 +11,8 @@ format = "modules"
 
 [site]
 bucket = "public"
+
+# Configuración de analytics
+analytics_engine_datasets = [
+  { binding = "MK_ANALYTICS", dataset = "mk_modular_remix_analytics" }
+]
